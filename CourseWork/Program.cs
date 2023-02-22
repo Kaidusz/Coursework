@@ -1,4 +1,5 @@
 using Microsoft.VisualBasic;
+using System.Transactions;
 
 namespace CourseWork
 {
@@ -40,36 +41,56 @@ namespace CourseWork
             Console.WriteLine("Input the value of d");
             double d = Convert.ToInt32(Console.ReadLine());
 
-            // Quadratic Equation for roots
+            // Quadratic Equation simplifying
             double deno = 3 * a * 2;
-            double numo = Math.Pow((2 * b), 2) - 4 * (3 * a + c);
-            double xroot1 = ((-2 * b) + Math.Sqrt(numo)) / deno;
-            double xroot2 = ((-2 * b) - Math.Sqrt(numo)) / deno;
+            double numo = 4 * (b * b) - 12 * a * c;
 
-            // First differentiation - Values of A, B and C
-            double fx1a1 = 3 * a * Math.Pow(xroot1, 2);
-            double fx1b1 = 2 * b * Math.Pow(xroot1, 1);
-            double fx1c1 = c;
-            double fx11 = fx1a1 + fx1b1 + fx1c1;
 
-            double fx1a2 = 3 * a * Math.Pow(xroot2, 2);
-            double fx1b2= 2 * b * Math.Pow(xroot2, 1);
-            double fx1c2 = c;
-            double fx12 = fx1a2 + fx1b2 + fx1c2;
+            // Check if there are roots with discriminant
 
-            double fx2a = 6 * a * xroot1;
-            double fx2b = 2 * b;
-            double fx2 = fx2a + fx2b;
-
-            double fy1 = a * Math.Pow(xroot1, 3) + b * Math.Pow(xroot1, 2) + c * xroot2 + d;
-            if (fx1a1 != 0)
+            if (numo > 0)
             {
-                Console.WriteLine("No maximum or Minimum root found");
-            } else if ((fx2 < 0) && fx11 == 0)  {
-                Console.WriteLine($"Maximum at X:{xroot1}, Y:{fy1}");
-            } else if ((fx2 > 0) && (fx11 == 0)) {
-                Console.WriteLine($"Minimum at X:{xroot1}, Y:{fy1}");
+                double xroot1 = (-2 * b + Math.Sqrt(numo)) / (deno);
+                double xroot2 = (-2 * b - Math.Sqrt(numo)) / (deno);
+                double y1 = a * Math.Pow(xroot1, 3) + b * Math.Pow(xroot1, 2) + c * xroot1 + d;
+                double y2 = a * Math.Pow(xroot2, 3) + b * Math.Pow(xroot2, 2) + c * xroot2 + d;
+
+                double df1 = 3 * xroot1 * xroot1 + 2 * b * xroot1 + c;
+                double dff1 = 6 * a * xroot1 + 2 * b;
+
+                double df2 = 3 * a * xroot2 * xroot2 + 2 * b * xroot2 + c;
+                double dff2 = 6 * a * xroot2 + 2 * b;
+
+                if (df1 == 0 && dff1 < 0)
+                {
+                    Console.WriteLine($"The maximum is at (X = {xroot1}, f(x) = {y1}");
+                }
+                else if (df1 == 0 && dff1 > 0)
+                {
+                    Console.WriteLine($"The minimum is at (X = {xroot1}, f(x) = {y1}");
+                } else if (df1 == 0 && dff1 == 0)
+                {
+                    Console.WriteLine("There may be an inflection in your function");
+                }
+
+                if (df2 == 0 && dff2 < 0)
+                {
+                    Console.WriteLine($"The maximum is at (X = {xroot2}, f(x) = {y2})");
+                }
+                else if (df2 == 0 && dff2 > 0)
+                {
+                    Console.WriteLine($"The minimum is at (X = {xroot2}, f(x) = {y2})");
+                }
+                else if (df2 == 0 && dff2 == 0)
+                {
+                    Console.WriteLine("There may be an inflection in your function");
+                }
             }
+            else
+            {
+                Console.WriteLine("No minimum or maximum found");
+            }
+
         }
         static void stock_analysis()
         {
