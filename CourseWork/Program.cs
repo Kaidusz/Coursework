@@ -11,10 +11,12 @@ namespace CourseWork
                 if (choice == 1)
                 {
                     cubic_max_min_finder();
-                } else if (choice == 2)
+                }
+                else if (choice == 2)
                 {
                     stock_analysis();
-                } else
+                }
+                else
                 {
                     Console.WriteLine("Invalid input");
                 }
@@ -28,7 +30,7 @@ namespace CourseWork
             // Initialise the values of a, b, c and d
             Console.WriteLine("In the form of ax^3 + bx^2 + cx + d");
             Console.WriteLine("Input the value of a");
-            double a= Convert.ToInt32(Console.ReadLine());
+            double a = Convert.ToInt32(Console.ReadLine());
             Console.WriteLine("Input the value of b");
             double b = Convert.ToInt32(Console.ReadLine());
             Console.WriteLine("Input the value of c");
@@ -42,23 +44,26 @@ namespace CourseWork
             double fx1c = c;
 
             double fx1 = fx1a + fx1b + fx1c;
-            if(fx1 != 0)
+            if (fx1 != 0)
             {
                 Console.WriteLine("No minimum or maximum found.");
             }
-
-            // Second differentiation - Values of A and B
-            double fx2a = 6 * a;
-            double fx2b = 2 * b;
-            double fx2 = fx2a + fx2b;
-
             // Quadratic Equation for roots
             double deno = 3 * a * 2;
             double numo = Math.Pow((2 * b), 2) - 4 * (3 * a + c);
             double xroot1 = ((-2 * b) + Math.Sqrt(numo)) / deno;
             double xroot2 = ((-2 * b) - Math.Sqrt(numo)) / deno;
-            
-            // F(xroot)
+
+            // Second differentiation - Values of A and B
+            double fx2a = 6 * a * xroot1;
+            double fx2b = 2 * b;
+            double fx2 = fx2a + fx2b;
+            double fxroot1 = Math.Pow(a * xroot1, 3) + Math.Pow(b * xroot2, 2) + c * xroot1 + d;
+
+            // Quadratic Equation for roots
+
+            Console.WriteLine(fx2);
+            Console.WriteLine(fxroot1);
         }
         static void stock_analysis()
         {
