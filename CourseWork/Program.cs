@@ -1,4 +1,4 @@
-﻿namespace CourseWork
+namespace CourseWork
 {
     internal class Program
     {
@@ -25,7 +25,40 @@
         }
         static void cubic_max_min_finder()
         {
-            Console.WriteLine("THIS EXISTS");
+            // Initialise the values of a, b, c and d
+            Console.WriteLine("In the form of ax^3 + bx^2 + cx + d");
+            Console.WriteLine("Input the value of a");
+            double a= Convert.ToInt32(Console.ReadLine());
+            Console.WriteLine("Input the value of b");
+            double b = Convert.ToInt32(Console.ReadLine());
+            Console.WriteLine("Input the value of c");
+            double c = Convert.ToInt32(Console.ReadLine());
+            Console.WriteLine("Input the value of d");
+            double d = Convert.ToInt32(Console.ReadLine());
+
+            // First differentiation - Values of A, B and C
+            double fx1a = Math.Pow((a * 3), 2);
+            double fx1b = Math.Pow((b * 2), 1);
+            double fx1c = c;
+
+            double fx1 = fx1a + fx1b + fx1c;
+            if(fx1 != 0)
+            {
+                Console.WriteLine("No minimum or maximum found.");
+            }
+
+            // Second differentiation - Values of A and B
+            double fx2a = 6 * a;
+            double fx2b = 2 * b;
+            double fx2 = fx2a + fx2b;
+
+            // Quadratic Equation for roots
+            double deno = 3 * a * 2;
+            double numo = Math.Pow((2 * b), 2) - 4 * (3 * a + c);
+            double xroot1 = ((-2 * b) + Math.Sqrt(numo)) / deno;
+            double xroot2 = ((-2 * b) - Math.Sqrt(numo)) / deno;
+            
+            // F(xroot)
         }
         static void stock_analysis()
         {
