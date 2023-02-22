@@ -50,17 +50,23 @@ namespace CourseWork
 
             if (numo > 0)
             {
+                // Roots
                 double xroot1 = (-2 * b + Math.Sqrt(numo)) / (deno);
                 double xroot2 = (-2 * b - Math.Sqrt(numo)) / (deno);
+
+                // Corresponding y coordinates
                 double y1 = a * Math.Pow(xroot1, 3) + b * Math.Pow(xroot1, 2) + c * xroot1 + d;
                 double y2 = a * Math.Pow(xroot2, 3) + b * Math.Pow(xroot2, 2) + c * xroot2 + d;
 
+                // Differentiation for first root
                 double df1 = 3 * xroot1 * xroot1 + 2 * b * xroot1 + c;
                 double dff1 = 6 * a * xroot1 + 2 * b;
 
+                // Differentiation for second root
                 double df2 = 3 * a * xroot2 * xroot2 + 2 * b * xroot2 + c;
                 double dff2 = 6 * a * xroot2 + 2 * b;
 
+                // For the first root
                 if (df1 == 0 && dff1 < 0)
                 {
                     Console.WriteLine($"The maximum is at (X = {xroot1}, f(x) = {y1}");
@@ -73,6 +79,7 @@ namespace CourseWork
                     Console.WriteLine("There may be an inflection in your function");
                 }
 
+                // For the second root
                 if (df2 == 0 && dff2 < 0)
                 {
                     Console.WriteLine($"The maximum is at (X = {xroot2}, f(x) = {y2})");
