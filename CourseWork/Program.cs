@@ -1,3 +1,5 @@
+using Microsoft.VisualBasic;
+
 namespace CourseWork
 {
     internal class Program
@@ -38,32 +40,36 @@ namespace CourseWork
             Console.WriteLine("Input the value of d");
             double d = Convert.ToInt32(Console.ReadLine());
 
-            // First differentiation - Values of A, B and C
-            double fx1a = Math.Pow((a * 3), 2);
-            double fx1b = Math.Pow((b * 2), 1);
-            double fx1c = c;
-
-            double fx1 = fx1a + fx1b + fx1c;
-            if (fx1 != 0)
-            {
-                Console.WriteLine("No minimum or maximum found.");
-            }
             // Quadratic Equation for roots
             double deno = 3 * a * 2;
             double numo = Math.Pow((2 * b), 2) - 4 * (3 * a + c);
             double xroot1 = ((-2 * b) + Math.Sqrt(numo)) / deno;
             double xroot2 = ((-2 * b) - Math.Sqrt(numo)) / deno;
 
-            // Second differentiation - Values of A and B
+            // First differentiation - Values of A, B and C
+            double fx1a1 = 3 * a * Math.Pow(xroot1, 2);
+            double fx1b1 = 2 * b * Math.Pow(xroot1, 1);
+            double fx1c1 = c;
+            double fx11 = fx1a1 + fx1b1 + fx1c1;
+
+            double fx1a2 = 3 * a * Math.Pow(xroot2, 2);
+            double fx1b2= 2 * b * Math.Pow(xroot2, 1);
+            double fx1c2 = c;
+            double fx12 = fx1a2 + fx1b2 + fx1c2;
+
             double fx2a = 6 * a * xroot1;
             double fx2b = 2 * b;
             double fx2 = fx2a + fx2b;
-            double fxroot1 = Math.Pow(a * xroot1, 3) + Math.Pow(b * xroot2, 2) + c * xroot1 + d;
 
-            // Quadratic Equation for roots
-
-            Console.WriteLine(fx2);
-            Console.WriteLine(fxroot1);
+            double fy1 = a * Math.Pow(xroot1, 3) + b * Math.Pow(xroot1, 2) + c * xroot2 + d;
+            if (fx1a1 != 0)
+            {
+                Console.WriteLine("No maximum or Minimum root found");
+            } else if ((fx2 < 0) && fx11 == 0)  {
+                Console.WriteLine($"Maximum at X:{xroot1}, Y:{fy1}");
+            } else if ((fx2 > 0) && (fx11 == 0)) {
+                Console.WriteLine($"Minimum at X:{xroot1}, Y:{fy1}");
+            }
         }
         static void stock_analysis()
         {
