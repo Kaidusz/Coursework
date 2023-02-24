@@ -104,6 +104,12 @@ namespace CourseWork
         }
         private static void stock_analysis()
         {
+            readfile();
+        }
+
+        // Making this a new method as it is quite long.
+        static void readfile()
+        {
             string[] lines = File.ReadAllLines(@"G:\Downloads\AMD.csv");
 
             // Creating lists for each field within the file
@@ -113,9 +119,9 @@ namespace CourseWork
             var high_price = new List<Double>();
             var low_price = new List<Double>();
             var close_price = new List<Double>();
-            var volume = new List<Double>();
+            var volume = new List<int>();
 
-            for(int i = 0; i < lines.Length; i++)
+            for (int i = 0; i < lines.Length; i++)
             {
                 string[] rows = lines[i].Split(',');
 
@@ -136,8 +142,8 @@ namespace CourseWork
                 close_price.Add(cp);
                 volume.Add(v);
                 
+                
             }
-            Console.ReadKey();
         }
     }
 }
