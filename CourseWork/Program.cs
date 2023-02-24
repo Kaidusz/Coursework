@@ -1,5 +1,8 @@
 using Microsoft.VisualBasic;
 using System.Transactions;
+using System.IO;
+using System.Collections.Specialized;
+using LINQtoCSV; // Package to read CSV files effectively
 
 namespace CourseWork
 {
@@ -66,27 +69,27 @@ namespace CourseWork
                 double df2 = 3 * a * xroot2 * xroot2 + 2 * b * xroot2 + c;
                 double dff2 = 6 * a * xroot2 + 2 * b;
 
-                // For the first root
+                // Finding the maximum or minimum for the first root
                 if (df1 == 0 && dff1 < 0)
                 {
-                    Console.WriteLine($"The maximum is at (X = {xroot1}, f(x) = {y1}");
+                    Console.WriteLine("The maximum is at (X =" + Math.Round(xroot1, 2) + " f(x) =" + Math.Round(y1, 2));
                 }
                 else if (df1 == 0 && dff1 > 0)
                 {
-                    Console.WriteLine($"The minimum is at (X = {xroot1}, f(x) = {y1}");
+                    Console.WriteLine("The minimum is at (X =" + Math.Round(xroot1, 2) + " f(x) =" + Math.Round(y1, 2));
                 } else if (df1 == 0 && dff1 == 0)
                 {
                     Console.WriteLine("There may be an inflection in your function");
                 }
 
-                // For the second root
+                // Finding the maximim or minimum for the second root
                 if (df2 == 0 && dff2 < 0)
                 {
-                    Console.WriteLine($"The maximum is at (X = {xroot2}, f(x) = {y2})");
+                    Console.WriteLine("The maximum is at (X =" + Math.Round(xroot2, 2) + " f(x) =" + Math.Round(y2, 2));
                 }
                 else if (df2 == 0 && dff2 > 0)
                 {
-                    Console.WriteLine($"The minimum is at (X = {xroot2}, f(x) = {y2})");
+                    Console.WriteLine("The minimum is at (X =" + Math.Round(xroot2, 2) + " f(x) =" + Math.Round(y2, 2));
                 }
                 else if (df2 == 0 && dff2 == 0)
                 {
@@ -101,7 +104,7 @@ namespace CourseWork
         }
         static void stock_analysis()
         {
-            Console.WriteLine("THIS ALSO EXISTS");
+
         }
     }
 }
