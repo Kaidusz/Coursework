@@ -2,7 +2,6 @@ using Microsoft.VisualBasic;
 using System.Transactions;
 using System.IO;
 using System.Collections.Specialized;
-using LINQtoCSV; // Package to read CSV files effectively
 
 namespace CourseWork
 {
@@ -77,7 +76,8 @@ namespace CourseWork
                 else if (df1 == 0 && dff1 > 0)
                 {
                     Console.WriteLine("The minimum is at (X =" + Math.Round(xroot1, 2) + " f(x) =" + Math.Round(y1, 2));
-                } else if (df1 == 0 && dff1 == 0)
+                }
+                else if (df1 == 0 && dff1 == 0)
                 {
                     Console.WriteLine("There may be an inflection in your function");
                 }
@@ -102,9 +102,42 @@ namespace CourseWork
             }
 
         }
-        static void stock_analysis()
+        private static void stock_analysis()
         {
+            string[] lines = File.ReadAllLines(@"G:\Downloads\AMD.csv");
 
+            // Creating lists for each field within the file
+
+            var dates = new List<DateTime>();
+            var open_price = new List<Double>();
+            var high_price = new List<Double>();
+            var low_price = new List<Double>();
+            var close_price = new List<Double>();
+            var volume = new List<Double>();
+
+            for(int i = 0; i < lines.Length; i++)
+            {
+                string[] rows = lines[i].Split(',');
+
+                // Converting the data from strings to the correct data type so I need to convert them all
+                DateTime d = Convert.ToDateTime(rows[0]);
+                double op = Convert.ToDouble(rows[1]);
+                double hp = Convert.ToDouble(rows[2]);
+                double lp = Convert.ToDouble(rows[3]);
+                double cp = Convert.ToDouble(rows[4]);
+                int v = Convert.ToInt32(rows[5]);
+
+
+                // Adding fields from our CSV file to our lists, I will be working entirely with indexes
+                dates.Add(d);
+                open_price.Add(op);
+                high_price.Add(hp);
+                low_price.Add(lp);
+                close_price.Add(cp);
+                volume.Add(v);
+                
+            }
+            Console.ReadKey();
         }
     }
 }
