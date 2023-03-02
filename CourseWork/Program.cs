@@ -2,11 +2,16 @@ using Microsoft.VisualBasic;
 using System.Transactions;
 using System.IO;
 using System.Collections.Specialized;
+using System.Linq;
+using System.Globalization;
+using System.ComponentModel;
+using System.Data.Common;
 
 namespace CourseWork
 {
     internal class Program
     {
+
         static void Main(string[] args)
         {
             Console.WriteLine("\t\tMain Menu \n\t Please select an option from below:\n1) Find the local minimum and maximum of a cubic function\n2) Stock analysis\n3) Exit Program");
@@ -45,16 +50,16 @@ namespace CourseWork
 
             // Quadratic Equation simplifying
             double deno = 3 * a * 2;
-            double numo = 4 * (b * b) - 12 * a * c;
+            double discriminant = 4 * (b * b) - 12 * a * c;
 
 
             // Check if there are roots with discriminant
 
-            if (numo > 0)
+            if (discriminant > 0)
             {
                 // Roots
-                double xroot1 = (-2 * b + Math.Sqrt(numo)) / (deno);
-                double xroot2 = (-2 * b - Math.Sqrt(numo)) / (deno);
+                double xroot1 = (-2 * b + Math.Sqrt(discriminant)) / (deno);
+                double xroot2 = (-2 * b - Math.Sqrt(discriminant)) / (deno);
 
                 // Corresponding y coordinates
                 double y1 = a * Math.Pow(xroot1, 3) + b * Math.Pow(xroot1, 2) + c * xroot1 + d;
@@ -102,31 +107,28 @@ namespace CourseWork
             }
 
         }
-        private static void stock_analysis()
+        static void stock_analysis()
         {
-            readfile();
-        }
-
-        // Making this a new method as it is quite long.
-        static void readfile()
-        {
-            string[] lines = File.ReadAllLines(@"G:\Downloads\AMD.csv");
+            string[] lines = File.ReadAllLines(@"C:\Users\guran\Downloads\AMD.csv");
 
             // Creating lists for each field within the file
-
-            var dates = new List<DateTime>();
-            var open_price = new List<Double>();
-            var high_price = new List<Double>();
-            var low_price = new List<Double>();
-            var close_price = new List<Double>();
-            var volume = new List<int>();
+ 
+            var dates = new List<DateOnly>();
+            var open_prices = new List<Double>();
+            var high_prices = new List<Double>();
+            var low_prices = new List<Double>();
+            var close_prices = new List<Double>();
+            var volumes = new List<int>();
+            var datesasstrings = new List<String>();
+            var months = new List<int>();
 
             for (int i = 0; i < lines.Length; i++)
             {
                 string[] rows = lines[i].Split(',');
 
                 // Converting the data from strings to the correct data type so I need to convert them all
-                DateTime d = Convert.ToDateTime(rows[0]);
+                DateOnly d = DateOnly.FromDateTime(Convert.ToDateTime(rows[0])); // This is DateOnly because if we used DateTime, it would include hh:mm:ss
+                String datestring = Convert.ToString(rows[0]);
                 double op = Convert.ToDouble(rows[1]);
                 double hp = Convert.ToDouble(rows[2]);
                 double lp = Convert.ToDouble(rows[3]);
@@ -134,16 +136,67 @@ namespace CourseWork
                 int v = Convert.ToInt32(rows[5]);
 
 
-                // Adding fields from our CSV file to our lists, I will be working entirely with indexes
+                // Adding fields from our CSV file to my lists, I will be working entirely with indexes
                 dates.Add(d);
-                open_price.Add(op);
-                high_price.Add(hp);
-                low_price.Add(lp);
-                close_price.Add(cp);
-                volume.Add(v);
-                
+                open_prices.Add(op);
+                high_prices.Add(hp);
+                low_prices.Add(lp);
+                close_prices.Add(cp);
+                volumes.Add(v);
+                datesasstrings.Add(datestring);
+
+                String[] date = datesasstrings[i].Split('/');
+                for (int j = 0; j < date.Length; j++)
+                {
+                    months.Add(Convert.ToInt32(date[j]));
+                    Console.WriteLine(months);
+                }
+
                 
             }
+            Console.WriteLine("\t\t Stocks Menu \n\t Please select an option from below:\n1) Yearly Data Analysis\n2) Monthly Data Analysis\n3) Back to Main Menu");
+            int choice = Convert.ToInt32(Console.ReadLine());
+            while (choice != 3)
+            {
+                if (choice == 1)
+                {
+                    yearly(dates, open_prices, high_prices, low_prices, close_prices, volumes);
+                }
+                else if (choice == 2)
+                {
+                    Console.WriteLine("This feature has not been implemented.");
+                    monthly(open_prices, high_prices, low_prices, close_prices, volumes, months);
+                }
+                else if (choice == 3)
+                {
+                    return;
+                }
+                else
+                {
+                    Console.WriteLine("Invalid input");
+                }
+                Console.WriteLine("\t\tStocks Menu \n\t Please select an option from below:\n1) Yearly Data Analysis\n2) Monthly Data Analysis\n3) Back to Main Menu");
+                choice = Convert.ToInt32(Console.ReadLine());
+            }
+        }
+
+        private static void monthly(List<double> open_prices, List<double> high_prices, List<double> low_prices, List<double> close_prices, List<int> volumes, List<int> months)
+        {
+        }
+
+        static void yearly(List<DateOnly> dates, List<double> open_prices, List<double> high_prices, List<double> low_prices, List<double> close_prices, List<int> volumes)
+        {
+            String datemaxvolume = Convert.ToString(dates[volumes.IndexOf(volumes.Max())]);
+            double firstprice = close_prices[volumes.IndexOf(volumes.Max())];
+            double lastprice = close_prices[volumes.IndexOf(volumes.Max()) - 1];
+            double changeprice = ((lastprice - firstprice) / lastprice) * 100;
+
+            Console.WriteLine("Total number of trading days: " + dates.Count);
+            Console.WriteLine("Opening price on the first day: " + Math.Round(open_prices[0]), 2);
+            Console.WriteLine("Closing price on last trading day: " + Math.Round(close_prices[close_prices.Count - 1]), 2);
+            Console.WriteLine("Highest trading price of the year: " + Math.Round(high_prices.Max()), 2);
+            Console.WriteLine("Lowest trading price of the year: " + Math.Round(low_prices.Min()), 2);
+            Console.WriteLine("Date with the highest trading volume: " + datemaxvolume + ", closing price change from the previous day: " + changeprice + "%");
         }
     }
 }
