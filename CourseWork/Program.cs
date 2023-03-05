@@ -119,8 +119,6 @@ namespace CourseWork
             var low_prices = new List<Double>();
             var close_prices = new List<Double>();
             var volumes = new List<int>();
-            var datesasstrings = new List<String>();
-            var months = new List<int>();
 
             for (int i = 0; i < lines.Length; i++)
             {
@@ -128,7 +126,6 @@ namespace CourseWork
 
                 // Converting the data from strings to the correct data type so I need to convert them all
                 DateOnly d = DateOnly.FromDateTime(Convert.ToDateTime(rows[0])); // This is DateOnly because if we used DateTime, it would include hh:mm:ss
-                String datestring = Convert.ToString(rows[0]);
                 double op = Convert.ToDouble(rows[1]);
                 double hp = Convert.ToDouble(rows[2]);
                 double lp = Convert.ToDouble(rows[3]);
@@ -143,17 +140,9 @@ namespace CourseWork
                 low_prices.Add(lp);
                 close_prices.Add(cp);
                 volumes.Add(v);
-                datesasstrings.Add(datestring);
 
-                String[] date = datesasstrings[i].Split('/');
-                for (int j = 0; j < date.Length; j++)
-                {
-                    months.Add(Convert.ToInt32(date[j]));
-                    Console.WriteLine(months);
-                }
-
-                
             }
+
             Console.WriteLine("\t\t Stocks Menu \n\t Please select an option from below:\n1) Yearly Data Analysis\n2) Monthly Data Analysis\n3) Back to Main Menu");
             int choice = Convert.ToInt32(Console.ReadLine());
             while (choice != 3)
@@ -165,7 +154,7 @@ namespace CourseWork
                 else if (choice == 2)
                 {
                     Console.WriteLine("This feature has not been implemented.");
-                    monthly(open_prices, high_prices, low_prices, close_prices, volumes, months);
+                    monthly(open_prices, high_prices, low_prices, close_prices, volumes, dates);
                 }
                 else if (choice == 3)
                 {
@@ -180,8 +169,113 @@ namespace CourseWork
             }
         }
 
-        private static void monthly(List<double> open_prices, List<double> high_prices, List<double> low_prices, List<double> close_prices, List<int> volumes, List<int> months)
+        private static void monthly(List<double> open_prices, List<double> high_prices, List<double> low_prices, List<double> close_prices, List<int> volumes, List<DateOnly> dates)
         {
+
+            // Creating a new list of months so we can compare to it.
+            DateOnly[] datefull = dates.ToArray();
+            var months = new List<int>();
+            for (int i = 0; i< datefull.Length; i++)
+            {
+
+                String[] date = datefull[i].ToString().Split('/');
+                int month = Convert.ToInt32(date[1]);
+                months.Add(month);
+            }
+
+            // Find the month as an integer 
+            int requiredmonth = 0;
+            var indexes = new List<int>();
+            Console.WriteLine("Enter a month as three letters: ");
+            string monthstring = Console.ReadLine();
+            switch (monthstring.ToUpper()) 
+            {
+                case "JAN":
+                    requiredmonth = 1;
+                    break;
+                case "FEB":
+                    requiredmonth = 2;
+                    break;
+                case "MAR":
+                    requiredmonth = 3;
+                    break;
+                case "APR":
+                    requiredmonth = 4;
+                    break;
+                case "MAY":
+                    requiredmonth = 5;
+                    break;
+                case "JUN":
+                    requiredmonth = 6;
+                    break;
+                case "JUL":
+                    requiredmonth = 7;
+                    break;
+                case "AUG": 
+                    requiredmonth = 8;
+                    break;
+                case "SEP":
+                    requiredmonth = 9;
+                    break;
+                case "OCT": 
+                    requiredmonth = 10;
+                    break;
+                case "NOV":
+                    requiredmonth = 11;
+                    break;
+                case "DEC":
+                    requiredmonth = 12;
+                    break;
+                default:
+                    Console.WriteLine("Invalid Input");
+                    break;
+            }
+
+            // Find index of the selected month and add it to a list.
+            for(int j = 0; j < months.Count; j++)
+            {
+                if(requiredmonth == months[j])
+                {
+                    indexes.Add(j);
+                }
+            }
+            int volume = 0;
+            double highest_price = 0;
+            double lowhighest_price = 1;
+            double lowest_price = 1;
+            double highlowest_price = 0;
+
+            for(int k = 0; k < months.Count; k++)
+            {
+                volume = volume + volumes[months[k]];
+            }
+
+            for(int l = 0; l < months.Count; l++)
+            {
+                if (highest_price < lowhighest_price)
+                {
+                    highest_price= lowhighest_price;
+
+                }
+            }
+
+            for (int p = 0; p < months.Count; p++)
+            {
+                if (highlowest_price < lowest_price)
+                {
+                    lowest_price = highlowest_price;
+                    highlowest_price = low_prices[months[p]];
+                }
+            }
+
+
+            Console.WriteLine("Selected Month:" + monthstring);
+            Console.WriteLine("Opening Price: " + open_prices[months[0]]);
+            Console.WriteLine("Closing Price: " + close_prices[months[months.Count - 1]]);
+            Console.WriteLine("Highest Trading Price: " + highest_price);
+            Console.WriteLine("Lowest Trading Price: " + lowest_price);
+            Console.WriteLine("Total Trading Volume: " + volume);
+
         }
 
         static void yearly(List<DateOnly> dates, List<double> open_prices, List<double> high_prices, List<double> low_prices, List<double> close_prices, List<int> volumes)
@@ -189,14 +283,14 @@ namespace CourseWork
             String datemaxvolume = Convert.ToString(dates[volumes.IndexOf(volumes.Max())]);
             double firstprice = close_prices[volumes.IndexOf(volumes.Max())];
             double lastprice = close_prices[volumes.IndexOf(volumes.Max()) - 1];
-            double changeprice = ((lastprice - firstprice) / lastprice) * 100;
+            double changeprice = ((firstprice - lastprice) / lastprice) * 100;
 
             Console.WriteLine("Total number of trading days: " + dates.Count);
-            Console.WriteLine("Opening price on the first day: " + Math.Round(open_prices[0]), 2);
-            Console.WriteLine("Closing price on last trading day: " + Math.Round(close_prices[close_prices.Count - 1]), 2);
-            Console.WriteLine("Highest trading price of the year: " + Math.Round(high_prices.Max()), 2);
-            Console.WriteLine("Lowest trading price of the year: " + Math.Round(low_prices.Min()), 2);
-            Console.WriteLine("Date with the highest trading volume: " + datemaxvolume + ", closing price change from the previous day: " + changeprice + "%");
+            Console.WriteLine("Opening price on the first day: " + open_prices[0]);
+            Console.WriteLine("Closing price on last trading day: " + close_prices[close_prices.Count - 1]);
+            Console.WriteLine("Highest trading price of the year: " + high_prices.Max());
+            Console.WriteLine("Lowest trading price of the year: " + low_prices.Min());
+            Console.WriteLine("Date with the highest trading volume: " + datemaxvolume + ", closing price change from the previous day: " + Math.Round(changeprice, 2) + "%");
         }
     }
 }
