@@ -260,13 +260,7 @@ namespace CourseWork
                 }
             }
 
-            for(int p = 0; p < indexes.Count; p++)
-            {
-                if (lowest_price > low_prices[indexes[p]])
-                {
-                    lowest_price = low_prices[indexes[p]];
-                }
-            }
+
 
 
 
