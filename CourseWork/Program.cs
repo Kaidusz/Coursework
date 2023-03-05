@@ -109,10 +109,10 @@ namespace CourseWork
         }
         static void stock_analysis()
         {
-            string[] lines = File.ReadAllLines(@"C:\Users\guran\Downloads\AMD.csv");
+            string[] lines = File.ReadAllLines(@"G:\Downloads\AMD.csv");
 
             // Creating lists for each field within the file
- 
+
             var dates = new List<DateOnly>();
             var open_prices = new List<Double>();
             var high_prices = new List<Double>();
@@ -169,13 +169,13 @@ namespace CourseWork
             }
         }
 
-        private static void monthly(List<double> open_prices, List<double> high_prices, List<double> low_prices, List<double> close_prices, List<int> volumes, List<DateOnly> dates)
+        static void monthly(List<double> open_prices, List<double> high_prices, List<double> low_prices, List<double> close_prices, List<int> volumes, List<DateOnly> dates)
         {
 
             // Creating a new list of months so we can compare to it.
             DateOnly[] datefull = dates.ToArray();
             var months = new List<int>();
-            for (int i = 0; i< datefull.Length; i++)
+            for (int i = 0; i < datefull.Length; i++)
             {
 
                 String[] date = datefull[i].ToString().Split('/');
@@ -188,7 +188,7 @@ namespace CourseWork
             var indexes = new List<int>();
             Console.WriteLine("Enter a month as three letters: ");
             string monthstring = Console.ReadLine();
-            switch (monthstring.ToUpper()) 
+            switch (monthstring.ToUpper())
             {
                 case "JAN":
                     requiredmonth = 1;
@@ -211,13 +211,13 @@ namespace CourseWork
                 case "JUL":
                     requiredmonth = 7;
                     break;
-                case "AUG": 
+                case "AUG":
                     requiredmonth = 8;
                     break;
                 case "SEP":
                     requiredmonth = 9;
                     break;
-                case "OCT": 
+                case "OCT":
                     requiredmonth = 10;
                     break;
                 case "NOV":
@@ -232,9 +232,9 @@ namespace CourseWork
             }
 
             // Find index of the selected month and add it to a list.
-            for(int j = 0; j < months.Count; j++)
+            for (int j = 0; j < months.Count; j++)
             {
-                if(requiredmonth == months[j])
+                if (requiredmonth == months[j])
                 {
                     indexes.Add(j);
                 }
@@ -245,33 +245,35 @@ namespace CourseWork
             double lowest_price = 1;
             double highlowest_price = 0;
 
-            for(int k = 0; k < months.Count; k++)
+            for (int k = 0; k < indexes.Count; k++)
             {
-                volume = volume + volumes[months[k]];
+                volume = volume + volumes[indexes[k]];
             }
 
-            for(int l = 0; l < months.Count; l++)
+            for (int l = 0; l < indexes.Count; l++)
             {
                 if (highest_price < lowhighest_price)
                 {
-                    highest_price= lowhighest_price;
+                    highest_price = lowhighest_price;
+                    lowhighest_price = high_prices[indexes[l]];
 
                 }
             }
 
-            for (int p = 0; p < months.Count; p++)
+            for(int p = 0; p < indexes.Count; p++)
             {
-                if (highlowest_price < lowest_price)
+                if(lowest_price < highlowest_price)
                 {
                     lowest_price = highlowest_price;
-                    highlowest_price = low_prices[months[p]];
+                    highlowest_price = low_prices[indexes[p]];
                 }
             }
+
 
 
             Console.WriteLine("Selected Month:" + monthstring);
-            Console.WriteLine("Opening Price: " + open_prices[months[0]]);
-            Console.WriteLine("Closing Price: " + close_prices[months[months.Count - 1]]);
+            Console.WriteLine("Opening Price: " + open_prices[indexes[0]]);
+            Console.WriteLine("Closing Price: " + close_prices[indexes[indexes.Count - 1]]);
             Console.WriteLine("Highest Trading Price: " + highest_price);
             Console.WriteLine("Lowest Trading Price: " + lowest_price);
             Console.WriteLine("Total Trading Volume: " + volume);
