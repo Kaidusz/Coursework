@@ -242,7 +242,7 @@ namespace CourseWork
             int volume = 0;
             double highest_price = 0;
             double lowhighest_price = 1;
-            double lowest_price = 1;
+            double lowest_price = 52134215;
             double highlowest_price = 0;
 
             for (int k = 0; k < indexes.Count; k++)
@@ -262,10 +262,9 @@ namespace CourseWork
 
             for(int p = 0; p < indexes.Count; p++)
             {
-                if(lowest_price < highlowest_price)
+                if (lowest_price > low_prices[indexes[p]])
                 {
-                    lowest_price = highlowest_price;
-                    highlowest_price = low_prices[indexes[p]];
+                    lowest_price = low_prices[indexes[p]];
                 }
             }
 
