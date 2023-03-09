@@ -14,6 +14,15 @@ namespace CourseWork
 
         static void Main(string[] args)
         {
+            /*
+             * 
+             * Main Menu creation
+             * Checks the users input to make sure that they select a valid option.
+             * Invalid options will cause the menu to pop back up until the input is 3
+             * Valid options will trigger other methods to be used via the appropriate input
+             * 
+             */
+
             Console.WriteLine("\t\tMain Menu \n\t Please select an option from below:\n1) Find the local minimum and maximum of a cubic function\n2) Stock analysis\n3) Exit Program");
             int choice = Convert.ToInt32(Console.ReadLine());
             while (choice != 3)
@@ -35,6 +44,17 @@ namespace CourseWork
             }
             Console.WriteLine("Have a great day");
         }
+
+        /*
+         * 
+         * Takes the value of a, b, c and d in the form: ax^3 + bx^2 + cx + d
+         * 
+         * Uses those values to calculate the roots and the values for differential equations for each of the roots.
+         * Discriminant is checked whether it is larger than 0, if it is not, it does not have a maximum or a minimum.
+         * 
+         * Differential equations are used for each root in order to find maximum and minimums for the equation and displayed correctly.
+         * 
+         */
         static void cubic_max_min_finder()
         {
             // Initialise the values of a, b, c and d
@@ -107,9 +127,23 @@ namespace CourseWork
             }
 
         }
+
+        /*
+         * 
+         * Create a lines variable that reads all the lines individually from the given path for the file
+         * 
+         * Create a list for each of the required fields in order to differentiate each of them
+         * Using a for loop, we can split the line up using .Split()
+         * For each of the lines, each index will correspond to a different field within the file, add each of these to a variable.
+         * DateOnly is used instead of DateTime as I do not want to display the time.
+         * Use the variable containing the data and use the .Add() function in order to add the data into respective lists
+         * 
+         * Display the final menu to go from monthly stock analysis, yearly stock analysis or exit back to the main menu.
+         * 
+         */
         static void stock_analysis()
         {
-            string[] lines = File.ReadAllLines(@"G:\Downloads\AMD.csv");
+            string[] lines = File.ReadAllLines(@"C:\Users\guran\Downloads\AMD.csv");
 
             // Creating lists for each field within the file
 
@@ -169,6 +203,20 @@ namespace CourseWork
             }
         }
 
+        /*
+         * 
+         * Adding all the lists as parameters as I will be working with all of them.
+         * 
+         * First we create a new array called datefull which will just be the dates list as an array so we can work with it
+         * Creating a new month list which will store all the month values so we can work with indexes.
+         * Split the datefull array by the / as the format is dd/mm/yyyy so we can now extract the first index value per date which will be mm
+         * Create a new list of indexes, these are the indexes we will be using on our main set of lists in order to get the correct values,
+         * It takes the input of month as three letters and gets an integer value and compares it to the months list, if the values match, it will take the index and add it to the indexes list.
+         * 
+         * Adds all volumes within the list using appropriate indexes, compares the highest prices and lowest prices
+         * Checks the Opening and Closing price and prints everything appropriately
+         * 
+         */
         static void monthly(List<double> open_prices, List<double> high_prices, List<double> low_prices, List<double> close_prices, List<int> volumes, List<DateOnly> dates)
         {
 
@@ -242,7 +290,7 @@ namespace CourseWork
             int volume = 0;
             double highest_price = 0;
             double lowhighest_price = 1;
-            double lowest_price = 52134215;
+            double lowest_price = 1;
             double highlowest_price = 0;
 
             for (int k = 0; k < indexes.Count; k++)
@@ -260,7 +308,7 @@ namespace CourseWork
                 }
             }
 
-            for(int p = 0; p < indexes.Count; p++)
+            for (int p = 0; p < indexes.Count; p++)
             {
                 if (lowest_price > low_prices[indexes[p]])
                 {
@@ -279,6 +327,16 @@ namespace CourseWork
 
         }
 
+
+        /*
+         * 
+         * Converts the date where there is maximum volume into a string
+         * Finds the price where the Volume is at the max
+         * Finds the price a day before the volume is at max
+         * Calculated the percentage change
+         * Prints out all data accordingly, primarily using indexes.
+         * 
+         */
         static void yearly(List<DateOnly> dates, List<double> open_prices, List<double> high_prices, List<double> low_prices, List<double> close_prices, List<int> volumes)
         {
             String datemaxvolume = Convert.ToString(dates[volumes.IndexOf(volumes.Max())]);
